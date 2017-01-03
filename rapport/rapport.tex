@@ -90,11 +90,11 @@
 \section{Introduction}
 
 Poursuivant nos travaux sur la logique floue, nous allons dans ce TP segmenter des images à l'aide de différents algorithmes utilisant de la logique floue.
-Alors que l'algorithme du C-Means est déjà fortement utilisé en logique classique, nous allons utiliser différentes variantes de ce dernier utilisant de la logique floue. Nous tenterons ainsi de segmenter, à l'aide des algorithmes Fuzzy C-Means, Hard C-Means, Possibilistic C-Means et de l'algorithme de Davé, l'image suivante en 6 classes distinctes :
+Alors que l'algorithme du C-Means est déjà fortement utilisé en logique classique, nous allons utiliser différentes variantes de ce dernier, notamment l'agorithme FCM utilisant de la logique floue. Nous tenterons ainsi de segmenter, à l'aide des algorithmes Fuzzy C-Means, Hard C-Means, Possibilistic C-Means et de l'algorithme de Davé, l'image suivante en 6 classes distinctes :
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=250px]{../img/6_classes_RGB.png}
+\includegraphics[width=225px]{../img/6_classes_RGB.png}
 \end{center}
 \caption{Image à segmentée}
 \end{figure}
@@ -112,16 +112,16 @@ Ainsi, pour les paramètres suivants :
       \hline
       Nombre de classes & 6 \\
       \hline
-      Valeur de m & 1 \\
+      Valeur de m & 2 \\
       \hline
-      Nombre d'itération & 1000 \\
+      Nombre d'itération & 100 \\
       \hline
-      \shortstack{ Valeur de seuil \\ de stabilité }  & 0.01 \\
+      \shortstack{ Valeur de seuil \\ de stabilité }  & 0.1 \\
       \hline
       Randomisation & 1 \\
       \hline
     \end{tabular}
-    \caption{Tableau des paramétres utiliser pour l'algorithme de FCM}
+    \caption{Paramétres utilisés pour l'algorithme de FCM}
   \end{center}
 \end{table}
 
@@ -129,7 +129,7 @@ Nous obtenons l'image suivante :
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=250px]{../img/FCM.png}
+\includegraphics[width=225px]{../img/FCM.png}
 \end{center}
 \caption{Image segmentée par FCM}
 \end{figure}
@@ -158,14 +158,14 @@ Ainsi, pour les paramètres suivants :
       \hline
       Valeur de m & 1 \\
       \hline
-      Nombre d'itération & 1000 \\
+      Nombre d'itération & 100 \\
       \hline
       \shortstack{ Valeur de seuil \\ de stabilité }  & 0.01 \\
       \hline
       Randomisation & 1 \\
       \hline
     \end{tabular}
-    \caption{Tableau des paramétres utiliser pour l'algorithme de HCM}
+    \caption{Paramétres utilisés pour l'algorithme de HCM}
   \end{center}
 \end{table}
 
@@ -173,7 +173,7 @@ Nous obtenons l'image suivante :
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=250px]{../img/HCM.png}
+\includegraphics[width=225px]{../img/HCM.png}
 \end{center}
 \caption{Image segmentée par HCM}
 \end{figure}
@@ -187,7 +187,7 @@ Ainsi que la courbe de performance suivante :
 \caption{Courbe de performance pour HCM}
 \end{figure}
 
-Le résultat obtenu est assez satisfaisant. On peut distinguer les 6 classes. On note cependant que des points parasites de certaines classes se trouvent dans d'autres.
+Le résultat obtenu est assez satisfaisant. On peut distinguer les 6 classes. On note cependant que des points parasites de certaines classes se trouvent dans d'autres. Deux couleurs en bas à droite qui fusionnent
 
 \section{Algorithme PCM}
 Fuzzy C-Means est la variante floue la plus simpliste de C-Means. Les résultats de cet algorithme dépandent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bonnes classification à l'aide de PCM.
@@ -200,16 +200,16 @@ Ainsi, pour les paramètres suivants :
       \hline
       Nombre de classes & 6 \\
       \hline
-      Valeur de m & 1 \\
+      Valeur de m & 2 \\
       \hline
-      Nombre d'itération & 1000 \\
+      Nombre d'itération & 40 \\
       \hline
-      \shortstack{ Valeur de seuil \\ de stabilité }  & 0.01 \\
+      \shortstack{ Valeur de seuil \\ de stabilité }  & 0.001 \\
       \hline
       Randomisation & 1 \\
       \hline
     \end{tabular}
-    \caption{Tableau des paramétres utiliser pour l'algorithme de PCM}
+    \caption{Paramétres utilisés pour l'algorithme de PCM}
   \end{center}
 \end{table}
 
@@ -217,7 +217,7 @@ Nous obtenons l'image suivante :
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=250px]{../img/PCM.png}
+\includegraphics[width=225px]{../img/PCM.png}
 \end{center}
 \caption{Image segmentée par PCM}
 \end{figure}
@@ -244,16 +244,18 @@ Ainsi, pour les paramètres suivants :
       \hline
       Nombre de classes & 6 \\
       \hline
-      Valeur de m & 1 \\
+      Valeur de m & 2 \\
       \hline
-      Nombre d'itération & 1000 \\
+      Nombre d'itération & 100 \\
       \hline
-      \shortstack{ Valeur de seuil \\ de stabilité }  & 0.01 \\
+      \shortstack{ Valeur de seuil \\ de stabilité }  & 0.000001 \\
+      \hline
+      \shortstack{ Valeur du ratio \\ d'aberration }  & 25 \\
       \hline
       Randomisation & 1 \\
       \hline
     \end{tabular}
-    \caption{Tableau des paramétres utiliser pour l'algorithme de Davé}
+    \caption{Paramétres utilisés pour l'algorithme de Davé}
   \end{center}
 \end{table}
 
@@ -261,7 +263,7 @@ Nous obtenons l'image suivante :
 
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=250px]{../img/Dave.png}
+\includegraphics[width=225px]{../img/Dave.png}
 \end{center}
 \caption{Image segmentée par l'algorithme de Davé}
 \end{figure}

@@ -1,5 +1,4 @@
 import java.awt.Color;
-import java.util.Collection;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
@@ -52,7 +51,7 @@ public class PCM_Visa_ implements PlugIn {
 		int nbclasses, nbpixels, iter;
 		double stab, seuil, valeur_seuil;
 		int i, j, k, l, imax, jmax, kmax;
-/*
+
 		String demande = JOptionPane.showInputDialog("Nombre de classes : ");
 		nbclasses = Integer.parseInt(demande);
 		nbpixels = width * height; // taille de l'image en pixels
@@ -68,17 +67,13 @@ public class PCM_Visa_ implements PlugIn {
 
 		demande = JOptionPane.showInputDialog("Randomisation am�lior�e ? ");
 		int valeur = Integer.parseInt(demande);
-		
-		*/
-		
-		//mes valeurs par defaut, pour debug
-		nbclasses = 6;
-		nbpixels = width * height;
-		double m = 2d;
-		int itermax = 40;
-		valeur_seuil = 0.001;
-		int valeur = 1;
-		
+
+		/*
+		 * //mes valeurs par defaut, pour debug nbclasses = 6; nbpixels = width
+		 * * height; double m = 2d; int itermax = 40; valeur_seuil = 0.001; int
+		 * valeur = 1;
+		 */
+
 		double c[][] = new double[nbclasses][3];
 		double cprev[][] = new double[nbclasses][3];
 		int cidx[] = new int[nbclasses];
@@ -98,7 +93,7 @@ public class PCM_Visa_ implements PlugIn {
 		}
 
 		double[] n = new double[nbclasses];
-		
+
 		// R�cup�ration des donn�es images
 		l = 0;
 		for (i = 0; i < width; i++) {
@@ -160,15 +155,15 @@ public class PCM_Visa_ implements PlugIn {
 		for (j = 0; j < nbpixels; j++) {
 			check = 0d;
 			for (i = 0; i < nbclasses; i++) {
-				double uij = 1d / (1d + Math.pow(Dmat[i][j], 1d / (m-1d)));
+				double uij = 1d / (1d + Math.pow(Dmat[i][j], 1d / (m - 1d)));
 				Umat[i][j] = uij;
 				check += uij;
 			}
-			//System.out.println(check);
+			// System.out.println(check);
 		}
-		
+
 		////////////////////////////////////////////////////////////
-		// FIN INITIALISATION FCM
+		// FIN INITIALISATION PCM
 		///////////////////////////////////////////////////////////
 
 		/////////////////////////////////////////////////////////////
@@ -188,21 +183,21 @@ public class PCM_Visa_ implements PlugIn {
 				double bNum = 0d;
 
 				double den = 0d;
-				
-				for(i = 0; i < nbpixels; i++) {
+
+				for (i = 0; i < nbpixels; i++) {
 					rNum += Math.pow(Uprev[k][i], m) * red[i];
 					gNum += Math.pow(Uprev[k][i], m) * green[i];
 					bNum += Math.pow(Uprev[k][i], m) * blue[i];
 					den += Math.pow(Uprev[k][i], m);
 				}
-				
-				if(den > 0) {
+
+				if (den > 0) {
 					c[k][0] = rNum / den;
 					c[k][1] = gNum / den;
 					c[k][2] = bNum / den;
 				}
 			}
-			
+
 			// Compute Dmat, the matrix of distances (euclidian) with the
 			// centro�ds
 			for (k = 0; k < kmax; k++) {
@@ -213,61 +208,61 @@ public class PCM_Visa_ implements PlugIn {
 					Dmat[k][i] = r2 + g2 + b2;
 				}
 			}
-			
+
 			// Calculate difference between the previous partition and the new
 			// partition (performance index)
 
-			//compute n_i
+			// compute n_i
 
 			for (i = 0; i < nbclasses; i++) {
-					double num = 0d;
-					double den = 0d;
-					for(j = 0; j < nbpixels; j++) {
-						num += Math.pow(Uprev[i][j], m) * Dprev[i][j];
-						den += Math.pow(Uprev[i][j], m);
-					}
-					if (den != 0)
-						n[i] = num / den;
-					else
-						n[i] = 1d;
+				double num = 0d;
+				double den = 0d;
+				for (j = 0; j < nbpixels; j++) {
+					num += Math.pow(Uprev[i][j], m) * Dprev[i][j];
+					den += Math.pow(Uprev[i][j], m);
+				}
+				if (den != 0)
+					n[i] = num / den;
+				else
+					n[i] = 1d;
 			}
-			
-			//degre d'appartenance
+
+			// degre d'appartenance
 			for (j = 0; j < nbpixels; j++) {
 				check = 0d;
 				for (i = 0; i < nbclasses; i++) {
-					double uij = 1d / (1d + Math.pow(Dmat[i][j] / n[i], 1d / (m-1d)));
+					double uij = 1d / (1d + Math.pow(Dmat[i][j] / n[i], 1d / (m - 1d)));
 					Umat[i][j] = uij;
 					check += uij;
 				}
-				//System.out.println(check);
+				// System.out.println(check);
 			}
-			
+
 			figJ[iter] = 0d;
-			for(i = 0; i < nbclasses; i++) {
+			for (i = 0; i < nbclasses; i++) {
 				double s1 = 0d;
 				double s2 = 0d;
 				for (j = 0; j < nbpixels; j++) {
 					s1 += Math.pow(Umat[i][j], m) * Dmat[i][j];
-					s2 += Math.pow(1 - Umat[i][j],m);
+					s2 += Math.pow(1 - Umat[i][j], m);
 				}
 				figJ[iter] += s1 + s2 * n[i];
 			}
-			
-			if(iter > 0)
+
+			if (iter > 0)
 				stab = Math.abs(figJ[iter] - figJ[iter - 1]);
-		
-			//System.out.println(iter + " : " + stab);
-			
+
+			// System.out.println(iter + " : " + stab);
+
 			iter++;
-			
+
 			for (k = 0; k < kmax; k++) {
 				for (i = 0; i < nbpixels; i++) {
 					Dprev[k][i] = Dmat[k][i];
 					Uprev[k][i] = Umat[k][i];
 				}
 			}
-			
+
 			////////////////////////////////////////////////////////
 
 			// Affichage de l'image segment�e
@@ -290,18 +285,18 @@ public class PCM_Visa_ implements PlugIn {
 			impseg.updateAndDraw();
 			//////////////////////////////////
 		} // Fin boucle
-		
+
 		double[] xplot = new double[itermax];
 		double[] yplot = new double[itermax];
 		for (int w = 0; w < itermax; w++) {
 			xplot[w] = (double) w;
 			yplot[w] = (double) figJ[w];
 		}
-		Plot plot = new Plot("Performance Index (FCM)", "iterations", "J(P) value", xplot, yplot);
+		Plot plot = new Plot("Performance Index (PCM)", "iterations", "J(P) value", xplot, yplot);
 		plot.setLineWidth(2);
 		plot.setColor(Color.blue);
 		plot.show();
-	} // Fin FCM
+	} // Fin PCM
 
 	int indice;
 	double min, max;

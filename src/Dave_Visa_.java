@@ -35,7 +35,7 @@ public class Dave_Visa_ implements PlugIn {
 		ImagePlus imp;
 		ImagePlus impseg;
 		ImagePlus impJ;
-		IJ.showMessage("Algorithme FCM", "If ready, Press OK");
+		IJ.showMessage("Algorithme Davé", "If ready, Press OK");
 		ImagePlus cw;
 
 		imp = WindowManager.getCurrentImage();
@@ -44,7 +44,7 @@ public class Dave_Visa_ implements PlugIn {
 		int width = ip.getWidth();
 		int height = ip.getHeight();
 
-		impseg = NewImage.createImage("Image segment�e par FCM", width, height, 1, 24, 0);
+		impseg = NewImage.createImage("Image segment�e par Davé", width, height, 1, 24, 0);
 		ipseg = impseg.getProcessor();
 		impseg.show();
 
@@ -52,7 +52,6 @@ public class Dave_Visa_ implements PlugIn {
 		double stab, seuil, valeur_seuil, delta2;
 		int i, j, k, l, imax, jmax, kmax;
 
-		/*
 		String demande = JOptionPane.showInputDialog("Nombre de classes : ");
 		nbclasses = Integer.parseInt(demande);
 		nbpixels = width * height; // taille de l'image en pixels
@@ -68,22 +67,16 @@ public class Dave_Visa_ implements PlugIn {
 
 		demande = JOptionPane.showInputDialog("Valeur du ratio d'aberrations : ");
 		delta2 = Math.pow(Double.parseDouble(demande), 2);
-		
+
 		demande = JOptionPane.showInputDialog("Randomisation am�lior�e ? ");
 		int valeur = Integer.parseInt(demande);
-		*/
-		
-		//mes valeurs par defaut, pour debug
-		nbclasses = 6;
-		nbpixels = width * height;
-		double m = 2d;
-		int itermax = 100;
-		valeur_seuil = 0.000001;
-		int valeur = 1;
-		delta2 = Math.pow(5, 2);
-		
-		
-		
+
+		/*
+		 * //mes valeurs par defaut, pour debug nbclasses = 6; nbpixels = width
+		 * * height; double m = 2d; int itermax = 100; valeur_seuil = 0.000001;
+		 * int valeur = 1; delta2 = Math.pow(5, 2);
+		 */
+
 		double c[][] = new double[nbclasses][3];
 		double cprev[][] = new double[nbclasses][3];
 		int cidx[] = new int[nbclasses];
@@ -115,7 +108,7 @@ public class Dave_Visa_ implements PlugIn {
 			}
 		}
 		////////////////////////////////
-		// FCM
+		// Davé
 		///////////////////////////////
 
 		imax = nbpixels; // nombre de pixels dans l'image
@@ -164,7 +157,7 @@ public class Dave_Visa_ implements PlugIn {
 		for (j = 0; j < nbpixels; j++) {
 			for (i = 0; i < nbclasses; i++) {
 				double uij = 0.;
-				for(k = 0; k < kmax; k++) {
+				for (k = 0; k < kmax; k++) {
 					if (Dprev[k][j] != 0) {
 						uij += Math.pow(Dprev[i][j] / Dprev[k][j], 2d / (m - 1d));
 					} else {
@@ -174,9 +167,9 @@ public class Dave_Visa_ implements PlugIn {
 				Uprev[i][j] = Math.pow(uij, -1d);
 			}
 		}
-		
+
 		////////////////////////////////////////////////////////////
-		// FIN INITIALISATION FCM
+		// FIN INITIALISATION Dave
 		///////////////////////////////////////////////////////////
 
 		/////////////////////////////////////////////////////////////
@@ -196,21 +189,21 @@ public class Dave_Visa_ implements PlugIn {
 				double bNum = 0d;
 
 				double den = 0d;
-				
-				for(i = 0; i < nbpixels; i++) {
+
+				for (i = 0; i < nbpixels; i++) {
 					rNum += Math.pow(Uprev[k][i], m) * red[i];
 					gNum += Math.pow(Uprev[k][i], m) * green[i];
 					bNum += Math.pow(Uprev[k][i], m) * blue[i];
 					den += Math.pow(Uprev[k][i], m);
 				}
-				
-				if(den > 0) {
+
+				if (den > 0) {
 					c[k][0] = rNum / den;
 					c[k][1] = gNum / den;
 					c[k][2] = bNum / den;
 				}
 			}
-			
+
 			// Compute Dmat, the matrix of distances (euclidian) with the
 			// centro�ds
 			for (k = 0; k < kmax; k++) {
@@ -221,15 +214,15 @@ public class Dave_Visa_ implements PlugIn {
 					Dmat[k][i] = r2 + g2 + b2;
 				}
 			}
-			
+
 			// Calculate difference between the previous partition and the new
 			// partition (performance index)
-			
-			//degre d'appartenance
+
+			// degre d'appartenance
 			for (j = 0; j < nbpixels; j++) {
 				for (i = 0; i < nbclasses; i++) {
 					double uij = 0.;
-					for(k = 0; k < kmax; k++) {
+					for (k = 0; k < kmax; k++) {
 						if (Dmat[k][j] != 0) {
 							uij += Math.pow(Dmat[i][j] / Dmat[k][j], 2. / (m - 1.));
 						} else {
@@ -239,40 +232,40 @@ public class Dave_Visa_ implements PlugIn {
 					Umat[i][j] = 1d / uij;
 				}
 			}
-			
-			//compute Ucluster
+
+			// compute Ucluster
 			for (j = 0; j < nbpixels; j++) {
 				for (i = 0; i < nbclasses; i++) {
 					Ucluster[j] += Umat[i][j];
 				}
 				Ucluster[j] = 1 - Ucluster[j];
 			}
-		
-			//compute J
+
+			// compute J
 			{
 				double sum1 = 0;
 				double sum2 = 0;
 				for (j = 0; j < nbpixels; j++) {
-					for(i = 0; i < nbclasses; i++) {
-						 sum1 += Math.pow(Umat[i][j], m) * Dmat[i][j];
+					for (i = 0; i < nbclasses; i++) {
+						sum1 += Math.pow(Umat[i][j], m) * Dmat[i][j];
 					}
 					sum2 += delta2 * Math.pow(Ucluster[j], m);
 				}
 				figJ[iter] = sum1 + sum2;
 			}
-					
-			if(iter > 0)
+
+			if (iter > 0)
 				stab = figJ[iter] - figJ[iter - 1];
-		
+
 			iter++;
-			
+
 			for (k = 0; k < kmax; k++) {
 				for (i = 0; i < nbpixels; i++) {
 					Dprev[k][i] = Dmat[k][i];
 					Uprev[k][i] = Umat[k][i];
 				}
 			}
-			
+
 			////////////////////////////////////////////////////////
 
 			// Affichage de l'image segment�e
@@ -295,18 +288,18 @@ public class Dave_Visa_ implements PlugIn {
 			impseg.updateAndDraw();
 			//////////////////////////////////
 		} // Fin boucle
-		
+
 		double[] xplot = new double[itermax];
 		double[] yplot = new double[itermax];
 		for (int w = 0; w < itermax; w++) {
 			xplot[w] = (double) w;
 			yplot[w] = (double) figJ[w];
 		}
-		Plot plot = new Plot("Performance Index (FCM)", "iterations", "J(P) value", xplot, yplot);
+		Plot plot = new Plot("Performance Index (Dave)", "iterations", "J(P) value", xplot, yplot);
 		plot.setLineWidth(2);
 		plot.setColor(Color.blue);
 		plot.show();
-	} // Fin FCM
+	} // Fin Dave
 
 	int indice;
 	double min, max;

@@ -51,7 +51,7 @@ public class HCM_Visa_ implements PlugIn {
 		int nbclasses, nbpixels, iter;
 		double stab, seuil, valeur_seuil;
 		int i, j, k, l, imax, jmax, kmax;
-/*
+
 		String demande = JOptionPane.showInputDialog("Nombre de classes : ");
 		nbclasses = Integer.parseInt(demande);
 		nbpixels = width * height; // taille de l'image en pixels
@@ -67,16 +67,13 @@ public class HCM_Visa_ implements PlugIn {
 
 		demande = JOptionPane.showInputDialog("Randomisation am�lior�e ? ");
 		int valeur = Integer.parseInt(demande);
-*/
-		
-		//mes valeurs par defaut, pour debug
-		nbclasses = 6;
-		nbpixels = width * height;
-		double m = 1d;
-		int itermax = 100;
-		valeur_seuil = 0.01;
-		int valeur = 1;
-		
+
+		/*
+		 * //mes valeurs par defaut, pour debug nbclasses = 6; nbpixels = width
+		 * * height; double m = 1d; int itermax = 100; valeur_seuil = 0.01; int
+		 * valeur = 1;
+		 */
+
 		double c[][] = new double[nbclasses][3];
 		double cprev[][] = new double[nbclasses][3];
 		int cidx[] = new int[nbclasses];
@@ -156,7 +153,7 @@ public class HCM_Visa_ implements PlugIn {
 		for (j = 0; j < nbpixels; j++) {
 			for (i = 0; i < nbclasses; i++) {
 				double uij = 1d;
-				for(k = 0; k < kmax; k++) {
+				for (k = 0; k < kmax; k++) {
 					if (k != i && Dmat[i][j] >= Dmat[k][j]) {
 						uij = 0d;
 					}
@@ -164,7 +161,7 @@ public class HCM_Visa_ implements PlugIn {
 				Uprev[i][j] = uij;
 			}
 		}
-		
+
 		////////////////////////////////////////////////////////////
 		// FIN INITIALISATION HCM
 		///////////////////////////////////////////////////////////
@@ -186,21 +183,21 @@ public class HCM_Visa_ implements PlugIn {
 				double bNum = 0d;
 
 				double den = 0d;
-				
-				for(i = 0; i < nbpixels; i++) {
+
+				for (i = 0; i < nbpixels; i++) {
 					rNum += Math.pow(Uprev[k][i], m) * red[i];
 					gNum += Math.pow(Uprev[k][i], m) * green[i];
 					bNum += Math.pow(Uprev[k][i], m) * blue[i];
 					den += Math.pow(Uprev[k][i], m);
 				}
-				
-				if(den > 0) {
+
+				if (den > 0) {
 					c[k][0] = rNum / den;
 					c[k][1] = gNum / den;
 					c[k][2] = bNum / den;
 				}
 			}
-			
+
 			// Compute Dmat, the matrix of distances (euclidian) with the
 			// centro�ds
 			for (k = 0; k < kmax; k++) {
@@ -211,15 +208,15 @@ public class HCM_Visa_ implements PlugIn {
 					Dmat[k][i] = r2 + g2 + b2;
 				}
 			}
-			
+
 			// Calculate difference between the previous partition and the new
 			// partition (performance index)
-			
-			//degre d'appartenance
+
+			// degre d'appartenance
 			for (j = 0; j < nbpixels; j++) {
 				for (i = 0; i < nbclasses; i++) {
 					double uij = 1d;
-					for(k = 0; k < kmax; k++) {
+					for (k = 0; k < kmax; k++) {
 						if (k != i && Dmat[i][j] >= Dmat[k][j]) {
 							uij = 0d;
 						}
@@ -227,29 +224,28 @@ public class HCM_Visa_ implements PlugIn {
 					Umat[i][j] = uij;
 				}
 			}
-			
+
 			figJ[iter] = 0;
-			for(i = 0; i < nbclasses; i++) {
+			for (i = 0; i < nbclasses; i++) {
 				for (j = 0; j < nbpixels; j++) {
 					figJ[iter] += Math.pow(Umat[i][j], m) * Dmat[i][j];
 				}
 			}
-			
-			if(iter > 0)
+
+			if (iter > 0)
 				stab = Math.abs(figJ[iter] - figJ[iter - 1]);
-		
-			
-			//System.out.println(iter + " : " + stab);
-			
+
+			// System.out.println(iter + " : " + stab);
+
 			iter++;
-			
+
 			for (k = 0; k < kmax; k++) {
 				for (i = 0; i < nbpixels; i++) {
 					Dprev[k][i] = Dmat[k][i];
 					Uprev[k][i] = Umat[k][i];
 				}
 			}
-			
+
 			////////////////////////////////////////////////////////
 
 			// Affichage de l'image segment�e
@@ -272,7 +268,7 @@ public class HCM_Visa_ implements PlugIn {
 			impseg.updateAndDraw();
 			//////////////////////////////////
 		} // Fin boucle
-		
+
 		double[] xplot = new double[itermax];
 		double[] yplot = new double[itermax];
 		for (int w = 0; w < itermax; w++) {
