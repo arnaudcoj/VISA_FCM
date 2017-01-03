@@ -89,8 +89,8 @@
 
 \section{Introduction}
 
-Poursuivant nos travaux sur la logique floue, nous allons dans ce TP segmenter des images à l'aide de différents algorithmes utilisant de la logique floue.
-Alors que l'algorithme du C-Means est déjà fortement utilisé en logique classique, nous allons utiliser différentes variantes de ce dernier, notamment l'agorithme FCM utilisant de la logique floue. Nous tenterons ainsi de segmenter, à l'aide des algorithmes Fuzzy C-Means, Hard C-Means, Possibilistic C-Means et de l'algorithme de Davé, l'image suivante en 6 classes distinctes :
+Poursuivant nos travaux sur la logique floue, nous allons dans ce TP segmenter des images.
+Alors que l'algorithme du C-Means est déjà fortement utilisé en logique classique, nous allons utiliser différentes variantes de ce dernier, notamment l'algorithme FCM utilisant de la logique floue. Nous tenterons ainsi de segmenter, à l'aide des algorithmes Fuzzy C-Means, Hard C-Means, Possibilistic C-Means et de l'algorithme de Davé, l'image suivante en 6 classes distinctes :
 
 \begin{figure}[H]
 \begin{center}
@@ -102,7 +102,7 @@ Alors que l'algorithme du C-Means est déjà fortement utilisé en logique class
 \clearpage
 
 \section{Algorithme FCM}
-Fuzzy C-Means est la variante floue la plus simpliste de C-Means. Les résultats de cet algorithme dépandent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bonnes classification à l'aide de FCM.
+Fuzzy C-Means est la variante floue la plus simpliste de C-Means. Les résultats de cet algorithme dépendent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bons résultats à l'aide de FCM. \\
 
 Ainsi, pour les paramètres suivants : 
 
@@ -146,7 +146,7 @@ Ainsi que la courbe de performance suivante :
 Le résultat obtenu est assez satisfaisant. On peut distinguer les 6 classes. On note cependant que des points parasites de certaines classes se trouvent dans d'autres.
 
 \section{Algorithme HCM}
-Fuzzy C-Means est la variante floue la plus simpliste de C-Means. Les résultats de cet algorithme dépandent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bonnes classification à l'aide de HCM.
+Nous avons ensuite utilisé l'algorithme Hard C-Means afin de segmenter l'image. Les résultats de cet algorithme dépendent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bons résultats à l'aide de HCM. \\
 
 Ainsi, pour les paramètres suivants : 
 
@@ -187,10 +187,10 @@ Ainsi que la courbe de performance suivante :
 \caption{Courbe de performance pour HCM}
 \end{figure}
 
-Le résultat obtenu est assez satisfaisant. On peut distinguer les 6 classes. On note cependant que des points parasites de certaines classes se trouvent dans d'autres. Deux couleurs en bas à droite qui fusionnent
+Le résultat obtenu est assez satisfaisant. On peut distinguer les 6 classes. Cependant, cette image présente plus ou moins les même problème qu'avec FCM et, elle est un exemple de bon résultat. Bien souvent, les deux classes inférieurs droites ne forment qu'une seule classe verte foncée. L'algorithme est aussi plus long à s'éxécuter. 
 
 \section{Algorithme PCM}
-Fuzzy C-Means est la variante floue la plus simpliste de C-Means. Les résultats de cet algorithme dépandent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bonnes classification à l'aide de PCM.
+Nous avons ensuite utilisé l'algorithme Possibilistic C-Means afin de segmenter l'image. Les résultats de cet algorithme dépendent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bons résultats à l'aide de PCM. \\
 
 Ainsi, pour les paramètres suivants : 
 
@@ -231,10 +231,10 @@ Ainsi que la courbe de performance suivante :
 \caption{Courbe de performance pour PCM}
 \end{figure}
 
-Le résultat obtenu est assez satisfaisant. On peut distinguer les 6 classes. On note cependant que des points parasites de certaines classes se trouvent dans d'autres.
+Le résultat est plutôt mauvais. On ne peut distinguer que 4 classes. les classes de gauches n'en forment que deux, une orange et une verte. C'est encore un fois un exemple. C'est parfois d'autres classes qui ont ce problème. 
 
 \section{Algorithme de Davé}
-Fuzzy C-Means est la variante floue la plus simpliste de C-Means. Les résultats de cet algorithme dépandent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bonnes classification à l'aide de FCM.
+Nous avons ensuite utilisé l'algorithme de Davé afin de segmenter l'image. Les résultats de cet algorithme dépendent de la position des centroides calculés aléatoirement au début de l'éxécution. Ainsi, les résultats peuvent varier d'une tentative de classification à une autre. Nous montrons ici des exemples de bons résultats à l'aide de l'algorithme de Davé. \\
 
 Ainsi, pour les paramètres suivants : 
 
@@ -277,7 +277,7 @@ Ainsi que la courbe de performance suivante :
 \caption{Courbe de performance pour l'algorithme de Davé}
 \end{figure}
 
-Le résultat obtenu est assez satisfaisant. On peut distinguer les 6 classes. On note cependant que des points parasites de certaines classes se trouvent dans d'autres.
+Le résultat obtenu est encore une fois assez mauvais. On peut distinguer les 5 classes mais la classe en haut au milieu est fortement parasitée. Encore un fois les résultats changent beaucoup en fonction de la position initiale des centroides. Peut être qu'en trouvant une meilleure valeur pour le ratio d'aberrations, on pourrait obtenir de meilleurs résultats.
 
 \clearpage
 
@@ -290,8 +290,5 @@ segmenter directement les images.\\
 Pour segmenter les images dont les degrés d'appartenance aux classes ont 
 été calculés, il faut définir des heuristiques qui vont séparer les 
 pixels.\\
-
-Il sagit pas d'une vraie segmentation
-
 
 \end{document}
